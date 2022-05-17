@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "c7c756cf-8bfe-4600-9776-78f38ca92c1d",
+		"name": "Meta-heroku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "新增使用者",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Hobby\",\n    \"avatar\": \"https://imgur.dcard.tw/KKoJdJKh.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fierce-inlet-29533.herokuapp.com/users",
+							"protocol": "https",
+							"host": [
+								"fierce-inlet-29533",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得使用者列表",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fierce-inlet-29533.herokuapp.com/users",
+							"protocol": "https",
+							"host": [
+								"fierce-inlet-29533",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "新增貼文",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\":\"6283b440c306bacd2c1e5b53\",\n    \"content\": \"10年前的今天，我們在澎湖天氣晴\",\n    \"image\": \"https://blog.kkday.com/wp-content/uploads/Taiwan_Penghu_Ashutterstock_1138184963.jpg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fierce-inlet-29533.herokuapp.com/posts",
+							"protocol": "https",
+							"host": [
+								"fierce-inlet-29533",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得貼文列表",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://fierce-inlet-29533.herokuapp.com/posts",
+							"protocol": "https",
+							"host": [
+								"fierce-inlet-29533",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
