@@ -1,4 +1,5 @@
 const User = require('../models/usersModel')
+const appError = require("../utils/appError")
 const resHandle = require('../utils/resHandle')
 
 const users = {
@@ -10,18 +11,18 @@ const users = {
 
   // 新增用戶
   async addUser(req, res, next) {
-    try {
-      const { name, avatar } = req.body
-      const newUser = await User.create({
-        name: name,
-        avatar: avatar
-      })
-      resHandle.successHandle(res, newUser)
-
-    } catch (error) {
-      let errorMessage = Object.values(error.errors).map(item => item.message)
-      resHandle.errorHandle(res, 400, errorMessage)
+    // name 欄位驗證
+    if (req.body.name === undefined) {
+      return next(appError(400, '請填寫 name', next))
     }
+
+    const { name, avatar } = req.body
+    const newUser = await User.create({
+      name: name,
+      avatar: avatar
+    })
+
+    resHandle.successHandle(res, newUser)
   }
 }
 

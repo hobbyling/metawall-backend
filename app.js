@@ -1,11 +1,10 @@
-var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts')
 const mongoose = require('mongoose')
 const cors = require('cors')
@@ -13,6 +12,13 @@ const dotenv = require('dotenv')
 
 dotenv.config({ path: './config.env' })
 const DB = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
+
+// 補捉程式錯誤
+process.on('uncaughtException', err => {
+  console.error('Uncaughted Exception！')
+  console.error(err);
+  process.exit(1);
+});
 
 var app = express();
 
@@ -33,27 +39,63 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter)
 
-// catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-//   next(createError(404));
-// });
+// 404 錯誤
 app.use(function (req, res, next) {
-  res.status(404).send('抱歉，您的頁面找不到')
+  res.status(404).json({
+    status: false,
+    message: '查無此頁面'
+  })
 })
 
+// production 環境錯誤
+const resErrorProd = (err, res) => {
+  if (err.isOperational) {
+    res.status(err.statusCode).json({
+      status: false,
+      message: err.message
+    })
+  } else {
+    console.err('出現錯誤', err)
+
+    res.status(500).json({
+      status: false,
+      message: '系統錯誤，請洽系統管理員'
+    })
+  }
+}
+
+// dev 環境錯誤
+const resErrorDev = (err, res) => {
+  res.status(err.statusCode).json({
+    status: false,
+    message: err.message,
+    error: err,
+    stack: err.stack
+  })
+}
+
+// 可預期錯誤處理
 app.use(function (err, req, res, next) {
-  res.status(500).send('程式有些問題，請稍後嘗試')
+  err.statusCode = err.statusCode || 500
+
+  // dev 環境
+  if (process.env.NODE_ENV === 'dev') {
+    return resErrorDev(err, res)
+  }
+
+  // production 環境
+  if (err.name === 'ValidationError') {
+    err.message = '資料欄位未正確填寫，請重新輸入'
+    err.isOperational = true
+    return resErrorProd(err, res)
+  }
+
+  return resErrorProd(err, res)
 })
 
-// error handler
-// app.use(function (err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
+// 未捕捉到的 catch
+process.on('unhandledRejection', (err, promise) => {
+  console.error('未捕捉到的 rejection：', promise, '原因：', err);
+});
 
 module.exports = app;
