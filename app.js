@@ -10,8 +10,14 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const dotenv = require('dotenv')
 
-dotenv.config({ path: './config.env' })
-const DB = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
+let DB = ''
+if (process.env.NODE_ENV === 'dev') {
+  dotenv.config({ path: './config_dev.env' })
+  DB = process.env.DATABASE
+} else {
+  dotenv.config({ path: './config.env' })
+  DB = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
+}
 
 // 補捉程式錯誤
 process.on('uncaughtException', err => {

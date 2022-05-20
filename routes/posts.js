@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
 const PostControllers = require('../controllers/postController')
+const { isAuth } = require('../utils/auth');
 const handleErrorAsync = require("../utils/handleErrorAsync")
 
-/* GET 取得貼文列表. */
-router.get('/', handleErrorAsync(PostControllers.getPosts));
+/* 取得全體動態牆 */
+router.get('/:userId?', isAuth, handleErrorAsync(PostControllers.getPosts));
 
-/* POST 新增貼文. */
-router.post('/', handleErrorAsync(PostControllers.addPosts));
+/* 新增動態 */
+router.post('/', isAuth, handleErrorAsync(PostControllers.addPosts));
 
 module.exports = router;

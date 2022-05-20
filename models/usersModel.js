@@ -9,9 +9,26 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXkDs9PoEgHbaLi-uZMDGTiBNkCKl58jaqGg&usqp=CAU'
     },
+    sex: {
+      type: String,
+      enum: ['male', 'female']
+    },
     createdAt: {
       type: Date,
       default: Date.now
+    },
+    password: {
+      type: String,
+      required: [true, '密碼未填寫'],
+      minlength: 8,
+      select: false
+    },
+    email: {
+      type: String,
+      required: [true, 'Email 未填寫'],
+      unique: true,
+      lowercase: true,
+      select: false
     }
   },
   {
