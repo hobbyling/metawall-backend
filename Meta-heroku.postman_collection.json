@@ -9,13 +9,13 @@
 			"name": "User",
 			"item": [
 				{
-					"name": "新增使用者",
+					"name": "註冊",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Hobby\",\n    \"avatar\": \"https://imgur.dcard.tw/KKoJdJKh.jpg\"\n}",
+							"raw": "{\n    \"name\": \"Hobby\",\n    \"email\": \"hobby@hotmail.com\",\n    \"password\": \"111111111\",\n    \"confirmPassword\": \"111111111\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -23,7 +23,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://fierce-inlet-29533.herokuapp.com/users",
+							"raw": "https://fierce-inlet-29533.herokuapp.com/users/sign_up",
 							"protocol": "https",
 							"host": [
 								"fierce-inlet-29533",
@@ -31,19 +31,29 @@
 								"com"
 							],
 							"path": [
-								"users"
+								"users",
+								"sign_up"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "取得使用者列表",
+					"name": "登入",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"hobby@hotmail.com\",\n    \"password\": \"111111111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "https://fierce-inlet-29533.herokuapp.com/users",
+							"raw": "https://fierce-inlet-29533.herokuapp.com/users/sign_in",
 							"protocol": "https",
 							"host": [
 								"fierce-inlet-29533",
@@ -51,7 +61,135 @@
 								"com"
 							],
 							"path": [
-								"users"
+								"users",
+								"sign_in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "重設密碼",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODdjOTc1MTNiMTg4ZWZiZWUwMDA1YyIsImlhdCI6MTY1MzA2NjUyNSwiZXhwIjoxNjUzNjcxMzI1fQ.A12UVdLR9qhZSZuX70waOAL2gPh-_hNCSQU8LdiTITY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"22222222\",\n    \"confirmPassword\": \"22222222\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fierce-inlet-29533.herokuapp.com/users/updatePassword",
+							"protocol": "https",
+							"host": [
+								"fierce-inlet-29533",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"updatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得個人資料（自己）",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODdjOTc1MTNiMTg4ZWZiZWUwMDA1YyIsImlhdCI6MTY1MzA2NjUyNSwiZXhwIjoxNjUzNjcxMzI1fQ.A12UVdLR9qhZSZuX70waOAL2gPh-_hNCSQU8LdiTITY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://fierce-inlet-29533.herokuapp.com/users/profile",
+							"protocol": "https",
+							"host": [
+								"fierce-inlet-29533",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得個人資料（他人）",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODdjOTc1MTNiMTg4ZWZiZWUwMDA1YyIsImlhdCI6MTY1MzA2NjUyNSwiZXhwIjoxNjUzNjcxMzI1fQ.A12UVdLR9qhZSZuX70waOAL2gPh-_hNCSQU8LdiTITY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://fierce-inlet-29533.herokuapp.com/users/profile/6287c98313b188efbee0005f",
+							"protocol": "https",
+							"host": [
+								"fierce-inlet-29533",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"profile",
+								"6287c98313b188efbee0005f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更新個人資料",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODdjOTc1MTNiMTg4ZWZiZWUwMDA1YyIsImlhdCI6MTY1MzA2NjUyNSwiZXhwIjoxNjUzNjcxMzI1fQ.A12UVdLR9qhZSZuX70waOAL2gPh-_hNCSQU8LdiTITY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Hobby Ling\",\n    \"sex\": \"female\",\n    \"avatar\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://fierce-inlet-29533.herokuapp.com/users/profile",
+							"protocol": "https",
+							"host": [
+								"fierce-inlet-29533",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"profile"
 							]
 						}
 					},
@@ -63,13 +201,19 @@
 			"name": "Post",
 			"item": [
 				{
-					"name": "新增貼文",
+					"name": "新增動態",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODdjOTc1MTNiMTg4ZWZiZWUwMDA1YyIsImlhdCI6MTY1MzA2NjUyNSwiZXhwIjoxNjUzNjcxMzI1fQ.A12UVdLR9qhZSZuX70waOAL2gPh-_hNCSQU8LdiTITY",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"user\":\"6283b440c306bacd2c1e5b53\",\n    \"content\": \"10年前的今天，我們在澎湖天氣晴\",\n    \"image\": \"https://blog.kkday.com/wp-content/uploads/Taiwan_Penghu_Ashutterstock_1138184963.jpg\"\n}",
+							"raw": "{\n    \"user\":\"6283c3f66d21473a429ca2e5\",\n    \"content\": \"別再下雨了，要發霉了\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -92,12 +236,18 @@
 					"response": []
 				},
 				{
-					"name": "取得貼文列表",
+					"name": "取得動態牆（全體）",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODdjOTc1MTNiMTg4ZWZiZWUwMDA1YyIsImlhdCI6MTY1MzA2NjUyNSwiZXhwIjoxNjUzNjcxMzI1fQ.A12UVdLR9qhZSZuX70waOAL2gPh-_hNCSQU8LdiTITY",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "https://fierce-inlet-29533.herokuapp.com/posts",
+							"raw": "https://fierce-inlet-29533.herokuapp.com/posts?q&timeSort",
 							"protocol": "https",
 							"host": [
 								"fierce-inlet-29533",
@@ -106,6 +256,55 @@
 							],
 							"path": [
 								"posts"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": null
+								},
+								{
+									"key": "timeSort",
+									"value": null,
+									"description": "asc / desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得動態牆（個人）",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODdjOTc1MTNiMTg4ZWZiZWUwMDA1YyIsImlhdCI6MTY1MzA2NjUyNSwiZXhwIjoxNjUzNjcxMzI1fQ.A12UVdLR9qhZSZuX70waOAL2gPh-_hNCSQU8LdiTITY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://fierce-inlet-29533.herokuapp.com/posts/6287c97513b188efbee0005c?timeSort=asc&q",
+							"protocol": "https",
+							"host": [
+								"fierce-inlet-29533",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"posts",
+								"6287c97513b188efbee0005c"
+							],
+							"query": [
+								{
+									"key": "timeSort",
+									"value": "asc",
+									"description": "asc /desc"
+								},
+								{
+									"key": "q",
+									"value": null
+								}
 							]
 						}
 					},
