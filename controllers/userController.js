@@ -110,7 +110,7 @@ const users = {
     generateSendJWT(user, 200, res)
   },
 
-  // 取得個人資料
+  // 取得個人資料（自己 / 他人）
   async getUserProfile(req, res, next) {
     // 若網址有帶參數，代表是其他人的資料
     let user = req.params.userId

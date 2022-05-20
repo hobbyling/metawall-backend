@@ -5,7 +5,7 @@ const { generateSendJWT } = require('../utils/auth')
 const validator = require('validator')
 
 const posts = {
-  // 取得全體動態牆
+  // 取得全體 / 個人動態牆
   async getPosts(req, res, next) {
     // 時間排序
     const timeSort = req.query.timeSort === 'asc' ? 'createdAt' : '-createdAt'
@@ -14,11 +14,11 @@ const posts = {
     const q = req.query.q !== undefined ? { "content": new RegExp(req.query.q) } : {};
 
     // 有帶參數表示是個人動態牆，搜尋條件需再多一個個人 ID
-    const serch = req.params.userId
-      ? { content: q, id: req.param.userId }
+    req.params.userId
+      ? q.id = req.param.userId
       : q
 
-    const posts = await Post.find(serch).populate({
+    const posts = await Post.find(q).populate({
       path: 'user',
       select: 'name avatar'
     }).sort(timeSort)

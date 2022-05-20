@@ -4,7 +4,7 @@ const PostControllers = require('../controllers/postController')
 const { isAuth } = require('../utils/auth');
 const handleErrorAsync = require("../utils/handleErrorAsync")
 
-/* 取得全體動態牆 */
+/* 取得全體 / 個人動態牆 */
 router.get('/:userId?', isAuth, handleErrorAsync(PostControllers.getPosts));
 
 /* 新增動態 */

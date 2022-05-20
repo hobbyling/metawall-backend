@@ -13,7 +13,7 @@ router.post('/sign_in', handleErrorAsync(UserControllers.signIn))
 /* 重設密碼 */
 router.post('/updatePassword', isAuth, handleErrorAsync(UserControllers.updatePassword))
 
-/* 取得個人資料 */
+/* 取得個人資料（自己 / 他人） */
 router.get('/profile/:userId?', isAuth, handleErrorAsync(UserControllers.getUserProfile))
 
 /* 更新個人資料 */
