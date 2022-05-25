@@ -29,7 +29,8 @@ process.on('uncaughtException', err => {
 var app = express();
 
 mongoose.connect(DB)
-  .then(res => console.log("連線資料成功"));
+  .then(res => console.log("連線資料成功"))
+  .catch(err => console.log("連線失敗：", err))
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
