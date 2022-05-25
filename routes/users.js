@@ -19,5 +19,4 @@ router.get('/profile/:userId?', isAuth, handleErrorAsync(UserControllers.getUser
 /* 更新個人資料 */
 router.patch('/profile', isAuth, handleErrorAsync(UserControllers.updateUserProfile))
 
-
 module.exports = router;

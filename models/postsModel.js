@@ -14,10 +14,24 @@ const postSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
+    comment: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Comment"
+      }
+    ],
     createdAt: {
       type: Date,
       default: Date.now
-    }
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now
+    },
+    like: [{
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
+    }]
   },
   {
     versionKey: false

@@ -5,7 +5,10 @@ var logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const postsRouter = require('./routes/posts')
+const postsRouter = require('./routes/posts');
+const likesRouter = require('./routes/likes');
+const commentRouter = require('./routes/comments');
+const followRouter = require('./routes/follow');
 const mongoose = require('mongoose')
 const cors = require('cors')
 const dotenv = require('dotenv')
@@ -43,7 +46,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/posts', postsRouter)
+app.use('/posts', postsRouter);
+app.use('/likes', likesRouter);
+app.use('/comments', commentRouter);
+app.use('/follows', followRouter);
 
 // 404 錯誤
 app.use(function (req, res, next) {

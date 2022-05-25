@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: Date.now
     },
+    updatedAt: {
+      type: Date,
+      default: Date.now
+    },
     password: {
       type: String,
       required: [true, '密碼未填寫'],
@@ -29,7 +33,11 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       select: false
-    }
+    },
+    like: [{
+      type: mongoose.Schema.ObjectId,
+      ref: 'Post'
+    }]
   },
   {
     versionKey: false
