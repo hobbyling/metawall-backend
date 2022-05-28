@@ -1,6 +1,28 @@
 const validator = require('validator')
 
 /**
+ * 欄位不可為空
+ * @param {object} obj 
+ * @returns {Boolean}
+ */
+exports.isNotEmpty = function (obj) {
+  let msg = {}
+  const arr = Object.entries(obj)
+  arr.forEach(item => {
+    if (!item[1]) {
+      msg[item[0]] = '欄位未填寫'
+    }
+  })
+
+  return Object.keys(msg).length < 1
+    ? { valid: true }
+    : {
+      valid: false,
+      msg
+    }
+}
+
+/**
  * 驗證密碼格式，至少 8 個字元以上，並英數混合
  * @param {string} str 密碼
  * @returns {Boolean}

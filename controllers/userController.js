@@ -2,7 +2,7 @@ const User = require('../models/usersModel')
 const appError = require("../utils/appError")
 const resHandle = require('../utils/resHandle')
 const { generateSendJWT } = require('../utils/auth')
-const { isValidPassword, isValidName, isValidEmail } = require('../utils/validate')
+const { isValidPassword, isValidName, isValidEmail, isNotEmpty } = require('../utils/validate')
 const bcrypt = require('bcryptjs')
 const validator = require('validator')
 
@@ -18,12 +18,8 @@ const users = {
     password = password ? password.trim() : password
 
     // 內容不可為空
-    let isNull = {}
-    if (!name) isNull.name = '欄位未填寫'
-    if (!email) isNull.email = '欄位未填寫'
-    if (!password) isNull.password = '欄位未填寫'
-    if (!name || !email || !password) {
-      return next(appError(400, 1, isNull, next))
+    if (!isNotEmpty({ name, email, password }).valid) {
+      return next(appError(400, 1, isNotEmpty({ name, email, password }).msg, next))
     }
 
     // 驗證姓名格式
