@@ -2,14 +2,18 @@ const User = require('../models/usersModel')
 const appError = require("../utils/appError")
 const resHandle = require('../utils/resHandle')
 const { generateSendJWT } = require('../utils/auth')
-const { isValidPassword, isValidName, isValidEmail, isNotEmpty } = require('../utils/validate')
+const {
+  isValidPassword,
+  isValidName,
+  isValidEmail,
+  isNotEmpty,
+  isValidGender
+} = require('../utils/validate')
 const bcrypt = require('bcryptjs')
-const validator = require('validator')
 
 const users = {
   // 註冊
   async signUp(req, res, next) {
-
     let { name, email, password } = req.body
 
     // 去除前後空白字元
@@ -58,24 +62,28 @@ const users = {
 
   // 登入
   async signIn(req, res, next) {
-    const { email, password } = req.body
+    let { email, password } = req.body
+
+    // 去除前後空白字元
+    email = email ? email.trim() : email
+    password = password ? password.trim() : password
 
     // 內容不可為空
-    if (!email || !password) {
-      return next(appError(400, '帳號、密碼不可為空', next))
+    if (!isNotEmpty({ email, password }).valid) {
+      return next(appError(400, 1, isNotEmpty({ email, password }).msg, next))
     }
 
     const user = await User.findOne({ email }).select('+password')
 
     // 無此帳號
     if (!user) {
-      return next(appError(400, '帳號、密碼不正確', next))
+      return next(appError(400, 3, { email: '帳號、密碼不正確' }, next))
     }
 
     // 密碼錯誤
     const auth = await bcrypt.compare(password, user.password)
     if (!auth) {
-      return next(appError(400, '帳號、密碼不正確', next))
+      return next(appError(400, 3, { email: '帳號、密碼不正確' }, next))
     }
 
     generateSendJWT(user, 200, res)
@@ -83,21 +91,29 @@ const users = {
 
   // 重設密碼
   async updatePassword(req, res, next) {
-    const { password, confirmPassword } = req.body
+    let { password, confirmPassword } = req.body
+
+    if (!req.user.id) {
+      return next(appError(400, 1, { user_id: '查無使用者 ID' }, next))
+    }
+
+    // 去除前後空白字元
+    password = password ? password.trim() : password
+    confirmPassword = confirmPassword ? confirmPassword.trim() : confirmPassword
 
     // 內容不可為空
-    if (!password || !confirmPassword) {
-      return next(appError(400, '欄位未填寫正確', next))
+    if (!isNotEmpty({ password, confirmPassword }).valid) {
+      return next(appError(400, 1, isNotEmpty({ password, confirmPassword }).msg, next))
     }
 
     // 密碼不一致
     if (password !== confirmPassword) {
-      return next(appError(400, '密碼不一致', next))
+      return next(appError(400, 1, { confirmPassword: '密碼不一致' }, next))
     }
 
-    // 密碼至少 8 個字元
-    if (!validator.isLength(password, { min: 8 })) {
-      return next(appError(400, '密碼字數少於 8 碼', next))
+    // 密碼至少 8 個字元以上，並英數混合
+    if (!isValidPassword(password).valid) {
+      return next(appError(400, 1, isValidPassword(password).msg, next))
     }
 
     const newPassword = await bcrypt.hash(password, 12)
@@ -109,32 +125,62 @@ const users = {
     generateSendJWT(user, 200, res)
   },
 
-  // 取得個人資料（自己 / 他人）
+  // 取得個人資料（自己）
+  async getProfile(req, res, next) {
+    if (!req.user.id) {
+      return next(appError(400, 1, { user_id: '查無使用者 ID' }, next))
+    }
+
+    const user = await User.findById(req.user.id)
+
+    resHandle.successHandle(res, user, 1)
+  },
+
+  // 取得個人資料（他人）
   async getUserProfile(req, res, next) {
-    // 若網址有帶參數，代表是其他人的資料
-    let user = req.params.userId
-      ? await User.findById(req.params.userId)
-      : await User.findById(req.user.id)
+    if (!req.params.userId) {
+      return next(appError(400, 1, { user_id: '查無使用者 ID' }, next))
+    }
+    let user = await User.findById(req.params.userId)
 
     resHandle.successHandle(res, user)
   },
 
   // 更新個人資料
-  async updateUserProfile(req, res, next) {
-    const { name, sex, avatar } = req.body
+  async updateProfile(req, res, next) {
+    let { name, gender, avatar } = req.body
+
+    if (!req.user.id) {
+      return next(appError(400, 1, { user_id: '查無使用者 ID' }, next))
+    }
+
+    // 去除前後空白字元
+    name = name ? name.trim() : name
+    gender = gender ? gender.trim() : gender
+    avatar = avatar ? avatar.trim() : avatar
 
     // 內容不可為空
-    if (!name || !sex) {
-      return next(appError(400, '欄位未填寫正確', next))
+    if (!isNotEmpty({ name, gender }).valid) {
+      return next(appError(400, 1, isNotEmpty({ name, gender }).msg, next))
+    }
+
+    // 驗證姓名格式
+    if (!isValidName(name).valid) {
+      return next(appError(400, 1, isValidName(name).msg, next))
+    }
+
+    // 性別只能填入特定值
+    if (!isValidGender(gender).valid) {
+      return next(appError(400, 1, isValidGender(gender).msg, next))
     }
 
     // 要送出的參數
     let param = {
       name,
-      sex
+      gender
     }
 
-    // 大頭照有值才寫入
+    // 頭像有值才寫入
     if (avatar) param.avatar = avatar
 
     // 更新資料

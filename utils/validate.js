@@ -70,3 +70,19 @@ exports.isValidEmail = function (email) {
       }
     }
 }
+
+/**
+ * 驗證性別格式
+ * @param {string} gender 
+ * @returns {Boolean}
+ */
+exports.isValidGender = function (gender) {
+  return gender === 'male' || gender === 'female'
+    ? { valid: true }
+    : {
+      valid: false,
+      msg: {
+        gender: '性別只能填入 male 或 female'
+      }
+    }
+}

@@ -7,6 +7,13 @@ const appError = (httpStatus, errStatus, errMessage = null, next) => {
 
     case 2:
       status = '資料已存在'
+      break;
+
+    case 3:
+      status = '資料驗證錯誤'
+
+    case 4:
+      status = '您尚未登入'
 
     default:
       break;

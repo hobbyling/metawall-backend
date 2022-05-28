@@ -27,10 +27,12 @@ const isAuth = handleErrorAsync(async (req, res, next) => {
 
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1]
+  } else {
+    return next(appError(401, 4, '查無 TOKEN', next))
   }
 
   if (!token) {
-    return next(appError(401, '您尚未登入', next))
+    return next(appError(401, 4, '查無 TOKEN', next))
   }
 
   // 驗證 token 正確性

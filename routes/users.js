@@ -16,13 +16,13 @@ router.post('/sign_in', handleErrorAsync(UserControllers.signIn))
 router.post('/updatePassword', isAuth, handleErrorAsync(UserControllers.updatePassword))
 
 /* 取得個人資料（自己） */
-router.get('/profile', isAuth, handleErrorAsync(UserControllers.getUserProfile))
+router.get('/profile', isAuth, handleErrorAsync(UserControllers.getProfile))
 
 /* 取得個人資料（他人） */
 router.get('/profile/:userId', isAuth, handleErrorAsync(UserControllers.getUserProfile))
 
 /* 更新個人資料 */
-router.patch('/profile', isAuth, handleErrorAsync(UserControllers.updateUserProfile))
+router.patch('/profile', isAuth, handleErrorAsync(UserControllers.updateProfile))
 
 /* 追蹤朋友 */
 router.post('/:userId/follow', isAuth, handleErrorAsync(FollowControllers.addFollow))
