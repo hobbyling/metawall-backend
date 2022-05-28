@@ -9,6 +9,7 @@ const postsRouter = require('./routes/posts');
 const likesRouter = require('./routes/likes');
 const commentRouter = require('./routes/comments');
 const followRouter = require('./routes/follow');
+const uploadRouter = require('./routes/uploads')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const dotenv = require('dotenv')
@@ -51,6 +52,7 @@ app.use('/posts', postsRouter);
 app.use('/likes', likesRouter);
 app.use('/comments', commentRouter);
 app.use('/follows', followRouter);
+app.use('/upload', uploadRouter);
 
 // 404 錯誤
 app.use(function (req, res, next) {
@@ -68,7 +70,7 @@ const resErrorProd = (err, res) => {
       message: err.message
     })
   } else {
-    console.err('出現錯誤', err)
+    console.error('出現錯誤', err)
 
     res.status(500).json({
       status: false,
