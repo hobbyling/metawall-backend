@@ -1,15 +1,17 @@
 const mongoose = require('mongoose')
 const commentSchema = new mongoose.Schema(
   {
-    user: {
+    editor: {
       type: mongoose.Schema.ObjectId,
-      ref: "User"
+      ref: "User",
+      required: [true, '請輸入留言者 ID']
     },
     postId: {
       type: mongoose.Schema.ObjectId,
-      ref: "Post"
+      ref: "Post",
+      required: [true, '請輸入貼文 ID']
     },
-    content: {
+    comment: {
       type: String,
       required: [true, '內容未填寫']
     },
@@ -27,5 +29,12 @@ const commentSchema = new mongoose.Schema(
   }
 )
 
-const follows = mongoose.model('Comment', commentSchema)
-module.exports = follows
+commentSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'editor',
+    select: 'name avatar id createdAt'
+  })
+})
+
+const Comment = mongoose.model('Comment', commentSchema)
+module.exports = Comment

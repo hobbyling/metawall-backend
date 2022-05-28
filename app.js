@@ -6,9 +6,7 @@ var logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
-const likesRouter = require('./routes/likes');
 const commentRouter = require('./routes/comments');
-const followRouter = require('./routes/follow');
 const uploadRouter = require('./routes/uploads')
 const mongoose = require('mongoose')
 const cors = require('cors')
@@ -17,7 +15,8 @@ const dotenv = require('dotenv')
 let DB = ''
 if (process.env.NODE_ENV === 'dev') {
   dotenv.config({ path: './config_dev.env' })
-  DB = process.env.DATABASE
+  // DB = process.env.DATABASE
+  DB = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
 } else {
   dotenv.config({ path: './config.env' })
   DB = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
@@ -49,9 +48,7 @@ app.use(cors())
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
-app.use('/likes', likesRouter);
 app.use('/comments', commentRouter);
-app.use('/follows', followRouter);
 app.use('/upload', uploadRouter);
 
 // 404 錯誤
@@ -67,7 +64,8 @@ const resErrorProd = (err, res) => {
   if (err.isOperational) {
     res.status(err.statusCode).json({
       status: false,
-      message: err.message
+      message: err.message,
+      error: err.error
     })
   } else {
     console.error('出現錯誤', err)
@@ -84,7 +82,9 @@ const resErrorDev = (err, res) => {
   res.status(err.statusCode).json({
     status: false,
     message: err.message,
-    error: err,
+    error: err.error,
+    statusCode: err.statusCode,
+    isOperational: err.isOperational,
     stack: err.stack
   })
 }

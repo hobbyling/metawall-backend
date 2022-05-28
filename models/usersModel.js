@@ -3,13 +3,14 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, '姓名未填寫']
+      required: [true, '姓名未填寫'],
+      minlength: [2, '姓名至少 2 個字元以上']
     },
     avatar: {
       type: String,
       default: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXkDs9PoEgHbaLi-uZMDGTiBNkCKl58jaqGg&usqp=CAU'
     },
-    sex: {
+    gender: {
       type: String,
       enum: ['male', 'female']
     },
@@ -24,7 +25,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, '密碼未填寫'],
-      minlength: 8,
+      minlength: [8, '密碼至少 8 個字元以上'],
       select: false
     },
     email: {
@@ -34,15 +35,35 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       select: false
     },
-    like: [{
-      type: mongoose.Schema.ObjectId,
-      ref: 'Post'
-    }]
+    followers: [
+      {
+        user: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'User'
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now
+        }
+      }
+    ],
+    followings: [
+      {
+        user: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'User'
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now
+        }
+      }
+    ]
   },
   {
     versionKey: false
   }
 )
 
-const users = mongoose.model('User', userSchema)
-module.exports = users
+const User = mongoose.model('User', userSchema)
+module.exports = User

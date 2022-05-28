@@ -1,5 +1,5 @@
 const User = require('../models/usersModel')
-const Follow = require('../models/followsModel')
+// const Follow = require('../models/followsModel')
 const appError = require("../utils/appError")
 const resHandle = require('../utils/resHandle')
 

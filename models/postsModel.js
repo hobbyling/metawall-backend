@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const postSchema = new mongoose.Schema(
   {
-    user: {
+    editor: {
       type: mongoose.Schema.ObjectId,
       ref: "User",
       required: [true, '貼文者 ID 未填寫']
@@ -14,12 +14,6 @@ const postSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
-    comment: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: "Comment"
-      }
-    ],
     createdAt: {
       type: Date,
       default: Date.now
@@ -28,15 +22,27 @@ const postSchema = new mongoose.Schema(
       type: Date,
       default: Date.now
     },
-    like: [{
+    likes: [{
       type: mongoose.Schema.ObjectId,
       ref: 'User'
     }]
   },
   {
-    versionKey: false
+    versionKey: false,
+    toJSON: {
+      virtuals: true
+    },
+    toObject: {
+      virtuals: true
+    }
   }
 )
+
+postSchema.virtual('comments', {
+  ref: 'Comment',
+  foreignField: 'post',
+  localField: '_id'
+})
 
 const Post = mongoose.model('Post', postSchema)
 module.exports = Post

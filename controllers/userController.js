@@ -1,61 +1,63 @@
 const User = require('../models/usersModel')
-const Follow = require('../models/followsModel')
 const appError = require("../utils/appError")
 const resHandle = require('../utils/resHandle')
 const { generateSendJWT } = require('../utils/auth')
+const { isValidPassword, isValidName, isValidEmail } = require('../utils/validate')
 const bcrypt = require('bcryptjs')
 const validator = require('validator')
 
 const users = {
-  // 取得所有用戶
-  async getUsers(req, res, next) {
-    const users = await User.find()
-    resHandle.successHandle(res, users)
-  },
-
   // 註冊
   async signUp(req, res, next) {
 
-    let { name, email, password, confirmPassword } = req.body
+    let { name, email, password } = req.body
+
+    // 去除前後空白字元
+    name = name ? name.trim() : name
+    email = email ? email.trim() : email
+    password = password ? password.trim() : password
 
     // 內容不可為空
-    if (!name || !email || !password || !confirmPassword) {
-      return next(appError(400, '欄位未填寫正確', next))
+    let isNull = {}
+    if (!name) isNull.name = '欄位未填寫'
+    if (!email) isNull.email = '欄位未填寫'
+    if (!password) isNull.password = '欄位未填寫'
+    if (!name || !email || !password) {
+      return next(appError(400, 1, isNull, next))
     }
 
-    // 密碼不一致
-    if (password !== confirmPassword) {
-      return next(appError(400, '密碼不一致', next))
-    }
-
-    // 密碼至少 8 個字元
-    if (!validator.isLength(password, { min: 8 })) {
-      return next(appError(400, '密碼字數少於 8 碼', next))
+    // 驗證姓名格式
+    if (!isValidName(name).valid) {
+      return next(appError(400, 1, isValidName(name).msg, next))
     }
 
     // Email 格式錯誤
-    if (!validator.isEmail(email)) {
-      return next(appError(400, 'Email 格式錯誤', next))
+    if (!isValidEmail(email).valid) {
+      return next(appError(400, 1, isValidEmail(email).msg, next))
     }
 
-    // Email 是否已被註冊過
-    // 先在資料庫尋找是否已存在 email
+    // 密碼至少 8 個字元以上，並英數混合
+    if (!isValidPassword(password).valid) {
+      return next(appError(400, 1, isValidPassword(password).msg, next))
+    }
+
+    // Email 是否已被註冊過，先在資料庫尋找是否已存在 email
     const isRegister = await User.findOne({ email }).count()
-
-    if (isRegister === 0) {
-      // 密碼加密
-      password = await bcrypt.hash(password, 12)
-
-      const newUser = await User.create({
-        name,
-        email,
-        password
-      })
-
-      generateSendJWT(newUser, 201, res)
-    } else {
-      return next(appError(400, '此 Email 已註冊過', next))
+    if (isRegister !== 0) {
+      return next(appError(400, 2, { email: '此 Email 已被註冊，請替換新的 Email!' }, next))
     }
+
+    // 密碼加密
+    password = await bcrypt.hash(password, 12)
+
+    // 建立使用者
+    const newUser = await User.create({
+      name,
+      email,
+      password
+    })
+
+    generateSendJWT(newUser, 201, res)
   },
 
   // 登入

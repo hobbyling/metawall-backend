@@ -41,6 +41,9 @@ const posts = {
     resHandle.successHandle(res, posts)
   },
 
+  // 取得單一貼文
+  async getPost(req, res, next) { },
+
   // 新增貼文
   async addPosts(req, res, next) {
     const { content, image } = req.body
