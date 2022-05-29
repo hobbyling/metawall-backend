@@ -1,6 +1,9 @@
-exports.successHandle = function (res, data = [], message = null) {
+exports.successHandle = function (res, data = null, message = null) {
   let responseMsg = ''
   switch (message) {
+    case 0:
+      responseMsg = '操作成功'
+
     case 1:
       responseMsg = '取得資料成功'
       break;
@@ -15,6 +18,9 @@ exports.successHandle = function (res, data = [], message = null) {
 
     case 4:
       responseMsg = '刪除資料成功'
+
+    case 5:
+      responseMsg = '追蹤成功'
 
     default:
       responseMsg = '操作成功'

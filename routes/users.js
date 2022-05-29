@@ -25,13 +25,13 @@ router.get('/profile/:userId', isAuth, handleErrorAsync(UserControllers.getUserP
 router.patch('/profile', isAuth, handleErrorAsync(UserControllers.updateProfile))
 
 /* 追蹤朋友 */
-router.post('/:userId/follow', isAuth, handleErrorAsync(FollowControllers.addFollow))
+router.post('/:userId/follow', isAuth, handleErrorAsync(FollowControllers.follow))
 
 /* 取消追蹤朋友 */
-router.delete('/:userId/unfollow', isAuth, handleErrorAsync(FollowControllers.deleteFollow))
+router.delete('/:userId/unfollow', isAuth, handleErrorAsync(FollowControllers.unFollow))
 
-/* 取得個人追蹤名單 */
-router.get('/following', isAuth, handleErrorAsync(FollowControllers.getFollowList))
+/* 取得個人追蹤列表 */
+router.get('/following', isAuth, handleErrorAsync(FollowControllers.getFollowingList))
 
 /* 取得個人按讚列表 */
 router.get('/getLikeList', isAuth, handleErrorAsync(LikeControllers.getLikeList))

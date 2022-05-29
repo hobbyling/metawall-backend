@@ -86,3 +86,19 @@ exports.isValidGender = function (gender) {
       }
     }
 }
+
+/**
+ * 驗證 mongoose ID格式
+ * @param {string} id 
+ * @returns {Boolean}
+ */
+exports.isValidID = function (id) {
+  return validator.isMongoId(id)
+    ? { valid: true }
+    : {
+      valid: false,
+      msg: {
+        userId: '請輸入正確 ID'
+      }
+    }
+}

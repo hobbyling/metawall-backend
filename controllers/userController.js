@@ -93,10 +93,6 @@ const users = {
   async updatePassword(req, res, next) {
     let { password, confirmPassword } = req.body
 
-    if (!req.user.id) {
-      return next(appError(400, 1, { user_id: '查無使用者 ID' }, next))
-    }
-
     // 去除前後空白字元
     password = password ? password.trim() : password
     confirmPassword = confirmPassword ? confirmPassword.trim() : confirmPassword
@@ -127,10 +123,6 @@ const users = {
 
   // 取得個人資料（自己）
   async getProfile(req, res, next) {
-    if (!req.user.id) {
-      return next(appError(400, 1, { user_id: '查無使用者 ID' }, next))
-    }
-
     const user = await User.findById(req.user.id)
 
     resHandle.successHandle(res, user, 1)
@@ -138,9 +130,6 @@ const users = {
 
   // 取得個人資料（他人）
   async getUserProfile(req, res, next) {
-    if (!req.params.userId) {
-      return next(appError(400, 1, { user_id: '查無使用者 ID' }, next))
-    }
     let user = await User.findById(req.params.userId)
 
     resHandle.successHandle(res, user)
@@ -149,10 +138,6 @@ const users = {
   // 更新個人資料
   async updateProfile(req, res, next) {
     let { name, gender, avatar } = req.body
-
-    if (!req.user.id) {
-      return next(appError(400, 1, { user_id: '查無使用者 ID' }, next))
-    }
 
     // 去除前後空白字元
     name = name ? name.trim() : name
@@ -189,39 +174,6 @@ const users = {
     const user = await User.findById(req.user.id)
 
     resHandle.successHandle(res, user)
-  },
-
-  // 取得追蹤列表
-  async getFollowList(req, res, next) {
-    const follows = await Follow.find({ "user": req.user.id }).populate({
-      path: 'following',
-      select: 'name avatar'
-    })
-
-    resHandle.successHandle(res, follows)
-  },
-
-  // 新增追蹤
-  async addFollow(req, res, next) {
-
-    const hasUser = await User.findById(req.param.userId).count()
-    if (hasUser === 0) {
-      return next(appError(400, '查無此帳號，無法追蹤', next))
-    }
-
-    await Follow.create({
-      user: req.user.id,
-      following: req.params.userId
-    })
-
-    resHandle.successHandle(res, '追蹤成功')
-  },
-
-  // 取消追蹤
-  async deleteFollow(req, res, next) {
-    await Follow.findOneAndDelete({ user: req.user.id, following: req.params.userId })
-
-    resHandle.successHandle(res, '取消追蹤成功')
   }
 }
 
