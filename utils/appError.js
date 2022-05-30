@@ -11,11 +11,18 @@ const appError = (httpStatus, errStatus, errMessage = null, next) => {
 
     case 3:
       status = '資料驗證錯誤'
+      break
 
     case 4:
       status = '您尚未登入'
+      break
+
+    case 5:
+      status = '身份不符'
+      break
 
     default:
+      status = '操作錯誤'
       break;
   }
 

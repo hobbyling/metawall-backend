@@ -10,10 +10,16 @@ const handleErrorAsync = require("../utils/handleErrorAsync")
 router.get('/', isAuth, handleErrorAsync(PostControllers.getAllPosts));
 
 /* 取得單一貼文 */
-router.get('/posts/postId', isAuth, handleErrorAsync(PostControllers.getPost));
+router.get('/posts/:postId', isAuth, handleErrorAsync(PostControllers.getPost));
 
 /* 新增貼文 */
-router.post('/', isAuth, handleErrorAsync(PostControllers.addPosts));
+router.post('/', isAuth, handleErrorAsync(PostControllers.addPost));
+
+/* 編輯貼文 */
+router.patch('/:postId', isAuth, handleErrorAsync(PostControllers.editPost));
+
+/* 刪除貼文 */
+router.delete('/:postId', isAuth, handleErrorAsync(PostControllers.deletePost));
 
 /* 新增一則貼文的讚 */
 router.post('/:postId/like', isAuth, handleErrorAsync(LikeControllers.addLike))

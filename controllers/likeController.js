@@ -1,30 +1,34 @@
 const Post = require('../models/postsModel')
 const appError = require("../utils/appError")
 const resHandle = require('../utils/resHandle')
+const { isValidID } = require('../utils/validate')
 
 const likes = {
-  // 取得個人按讚的貼文列表
+  // 取得個人按讚列表
   async getLikeList(req, res, next) {
     const list = await Post.find({
       likes: {
         $in: [req.user.id]
       }
     }).populate({
-      path: 'user',
-      select: 'name avatar'
+      path: 'editor',
+      select: 'name avatar _id'
     })
 
     resHandle.successHandle(res, list)
   },
 
-  // 新增讚
+  // 新增一則貼文的讚
   async addLike(req, res, next) {
-    const _id = req.params.postId
+    const { postId } = req.params
 
-    if (!_id) return next(appError(400, '請輸入貼文 ID', next))
+    // 驗證 ID 格式
+    if (!isValidID(postId).valid) {
+      return next(appError(400, 1, isValidID(postId).msg, next))
+    }
 
     // 在 post 的 like 新增 user id
-    await Post.findByIdAndUpdate(_id, {
+    await Post.findByIdAndUpdate(postId, {
       $addToSet: {
         likes: req.user.id
       }
@@ -33,14 +37,18 @@ const likes = {
     resHandle.successHandle(res, '按讚成功')
   },
 
-  // 取消讚
+  // 取消一則貼文的讚
   async deleteLike(req, res, next) {
-    const _id = req.params.postId
-    if (!_id) return next(appError(400, '請輸入貼文 ID', next))
+    const { postId } = req.params
 
-    await Post.findByIdAndUpdate(_id, {
+    // 驗證 ID 格式
+    if (!isValidID(postId).valid) {
+      return next(appError(400, 1, isValidID(postId).msg, next))
+    }
+
+    await Post.findByIdAndUpdate(postId, {
       $pull: {
-        like: req.user.id
+        likes: req.user.id
       }
     })
 

@@ -11,7 +11,7 @@ const commentSchema = new mongoose.Schema(
       ref: "Post",
       required: [true, '請輸入貼文 ID']
     },
-    comment: {
+    content: {
       type: String,
       required: [true, '內容未填寫']
     },
@@ -32,8 +32,10 @@ const commentSchema = new mongoose.Schema(
 commentSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'editor',
-    select: 'name avatar id createdAt'
+    select: 'name avatar createdAt'
   })
+
+  next();
 })
 
 const Comment = mongoose.model('Comment', commentSchema)

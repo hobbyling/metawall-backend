@@ -102,3 +102,29 @@ exports.isValidID = function (id) {
       }
     }
 }
+
+/**
+ * 驗證 當前頁碼
+ * @param {string} page 
+ * @returns {Boolean}
+ */
+exports.isValidPage = function (page) {
+  return page
+    ? validator.isInt(page.toString())
+      ? Math.max(1, Number(page))
+      : 1
+    : 1
+}
+
+/**
+ * 驗證 單頁筆數
+ * @param {string} limit 
+ * @returns {Boolean}
+ */
+exports.isValidLimit = function (limit) {
+  return limit
+    ? validator.isInt(limit.toString()) && Number(limit) > 0
+      ? Number(limit)
+      : 10
+    : 10
+}

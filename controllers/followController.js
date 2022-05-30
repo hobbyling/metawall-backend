@@ -11,7 +11,7 @@ const follows = {
     ).populate({
       path: 'followings.user',
       select: 'name avatar _id'
-    }).select('followings')
+    }).select('followings').sort('followings.createdAt')
 
     resHandle.successHandle(res, { list: list[0].followings })
   },

@@ -6,7 +6,6 @@ var logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
-const commentRouter = require('./routes/comments');
 const uploadRouter = require('./routes/uploads')
 const mongoose = require('mongoose')
 const cors = require('cors')
@@ -48,7 +47,6 @@ app.use(cors())
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postsRouter);
-app.use('/comments', commentRouter);
 app.use('/upload', uploadRouter);
 
 // 404 錯誤
