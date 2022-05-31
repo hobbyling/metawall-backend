@@ -1,14 +1,15 @@
-# Nodejs Express
+# 貼文動態牆 
 
-## About the Project
+## 🎈 About the Project
+Nodejs 直播班期末專案，實作貼文動態牆需要的 API
 
-## Build With
+## ⚒ Build With
+- Nodejs
+- Heroku
+- Mongoose
 
-## Getting Start
-
----
-
-以下照著範例做，可以讓你在本地端 run 此專案
+## 🏗 Getting Start
+以下照著範例做，可以在本地端 run 此專案
 
 1. Clone the Repo
 
