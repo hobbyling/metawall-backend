@@ -6,7 +6,7 @@ const { imageClient, default: ImgurClient } = require("imgur")
 const uploads = {
   async uploadImage(req, res, next) {
     if (!req.files.length) {
-      return next(appError(400, '尚未上傳檔案', next))
+      return next(appError(400, 1, '尚未上傳檔案', next))
     }
 
     const dimensions = sizeOf(req.files[0].buffer)
