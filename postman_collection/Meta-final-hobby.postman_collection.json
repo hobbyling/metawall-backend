@@ -1,0 +1,1033 @@
+{
+	"info": {
+		"_postman_id": "caad6368-494c-4310-8b1e-2ba5ecc70280",
+		"name": "Meta-final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6507417"
+	},
+	"item": [
+		{
+			"name": "會員功能",
+			"item": [
+				{
+					"name": "註冊",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"node\",\n    \"email\": \"node@gmail.com\",\n    \"password\": \"11111weew\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/sign_up",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"sign_up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "登入",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"hobby@gmail.com\",\n    \"password\": \"1q2w3e4r\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/sign_in",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"sign_in"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "hobby",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"hobby@gmail.com\",\n    \"password\": \"1q2w3e4r\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/users/sign_in",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"users",
+										"sign_in"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "haru",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"haru@gmail.com\",\n    \"password\": \"1q2w3e4r\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/users/sign_in",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"users",
+										"sign_in"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "重設密碼",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"22222222\",\n    \"confirmPassword\": \"22222222\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/updatePassword",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"updatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得個人資料（自己）",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/users/profile",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得個人資料（他人）",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/users/profile/:userId",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"profile",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "62927b3fa1286b65c1c43597"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更新個人資料",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Hobby Ling\",\n    \"gender\": \"female\",\n    \"avatar\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/profile",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "會員按讚追蹤動態",
+			"item": [
+				{
+					"name": "追蹤朋友",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/users/:userId/follow",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								":userId",
+								"follow"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "6294770b656469974cb7fa48"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取消追蹤朋友",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/users/:userId/unfollow",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								":userId",
+								"unfollow"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "629283352e3274b2e19e3b5d"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得個人追蹤列表",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/users/following",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"following"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得個人按讚列表",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/users/getLikeList",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"getLikeList"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "動態貼文",
+			"item": [
+				{
+					"name": "取得所有貼文",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/posts?q=健身&timeSort=asc&page=1&limit",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "健身",
+									"description": "關鍵字"
+								},
+								{
+									"key": "timeSort",
+									"value": "asc",
+									"description": "建立日期排序 asc / desc"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "當前頁碼"
+								},
+								{
+									"key": "limit",
+									"value": null,
+									"description": "單頁筆數"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得單一貼文",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/posts/posts/:postId",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts",
+								"posts",
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "{{POSTID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "新增貼文",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"別再下雨了，要發霉了\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/posts",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "編輯貼文",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"下雨天了怎麼辦，我好想你～\",\n    \"image\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/posts/:postId",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts",
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "629482ff1f55c245675e1bdd"
+								}
+							]
+						},
+						"description": "身為貼文的發文者才能編輯貼文"
+					},
+					"response": []
+				},
+				{
+					"name": "刪除貼文",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/posts/:postId",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts",
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": null
+								}
+							]
+						},
+						"description": "身為貼文的發文者才能刪除貼文"
+					},
+					"response": [
+						{
+							"name": "情境：自己發的貼文才能刪除",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/posts/:postId",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"posts",
+										":postId"
+									],
+									"variable": [
+										{
+											"key": "postId",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "新增一則貼文的讚",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/posts/:postId/like",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts",
+								":postId",
+								"like"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "62947763656469974cb7fa50",
+									"description": "貼文 ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取消一則貼文的讚",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/posts/:postId/unlike",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts",
+								":postId",
+								"unlike"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "6294761f656469974cb7fa3d",
+									"description": "貼文 ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "新增一則貼文的留言",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"++\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/posts/:postId/comment",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts",
+								":postId",
+								"comment"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "62947763656469974cb7fa50"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "刪除留言",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/posts/comment/:commentId",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts",
+								"comment",
+								":commentId"
+							],
+							"variable": [
+								{
+									"key": "commentId",
+									"value": "6294e52b12140fa85261ac94",
+									"description": "留言 ID"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "情境- 非留言者且不是自己的貼文時不能刪除留言",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/posts/comment/:commentId",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"posts",
+										"comment",
+										":commentId"
+									],
+									"variable": [
+										{
+											"key": "commentId",
+											"value": "6294e52b12140fa85261ac94",
+											"description": "留言 ID"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "457"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c9-MZthVAbHh9pdL2wYVvZvcEzp9YM\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 May 2022 15:43:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"操作錯誤\",\n    \"error\": \"您不非留言者，無法刪除此留言\",\n    \"statusCode\": 400,\n    \"isOperational\": true,\n    \"stack\": \"Error: 操作錯誤\\n    at appError (/Users/hobbylee/vhost/node_main_mission/metawall-backend/utils/appError.js:29:17)\\n    at deleteComment (/Users/hobbylee/vhost/node_main_mission/metawall-backend/controllers/commentController.js:73:21)\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\"\n}"
+						},
+						{
+							"name": "情境：自己是留言者，可刪除留言",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/posts/comment/:commentId",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"posts",
+										"comment",
+										":commentId"
+									],
+									"variable": [
+										{
+											"key": "commentId",
+											"value": "629496162e0df39341024a44",
+											"description": "留言 ID"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "457"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c9-MZthVAbHh9pdL2wYVvZvcEzp9YM\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 May 2022 15:43:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"操作錯誤\",\n    \"error\": \"您不非留言者，無法刪除此留言\",\n    \"statusCode\": 400,\n    \"isOperational\": true,\n    \"stack\": \"Error: 操作錯誤\\n    at appError (/Users/hobbylee/vhost/node_main_mission/metawall-backend/utils/appError.js:29:17)\\n    at deleteComment (/Users/hobbylee/vhost/node_main_mission/metawall-backend/controllers/commentController.js:73:21)\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\"\n}"
+						},
+						{
+							"name": "情境：自己貼文下的留言皆可刪除",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/posts/comment/:commentId",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"posts",
+										"comment",
+										":commentId"
+									],
+									"variable": [
+										{
+											"key": "commentId",
+											"value": "629495d32e0df39341024a40",
+											"description": "留言 ID"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "457"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c9-MZthVAbHh9pdL2wYVvZvcEzp9YM\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 30 May 2022 15:43:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": false,\n    \"message\": \"操作錯誤\",\n    \"error\": \"您不非留言者，無法刪除此留言\",\n    \"statusCode\": 400,\n    \"isOperational\": true,\n    \"stack\": \"Error: 操作錯誤\\n    at appError (/Users/hobbylee/vhost/node_main_mission/metawall-backend/utils/appError.js:29:17)\\n    at deleteComment (/Users/hobbylee/vhost/node_main_mission/metawall-backend/controllers/commentController.js:73:21)\\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)\"\n}"
+						}
+					]
+				},
+				{
+					"name": "取得個人所有貼文列表",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/posts/:userId?timeSort=asc&q&page&limit",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"posts",
+								":userId"
+							],
+							"query": [
+								{
+									"key": "timeSort",
+									"value": "asc",
+									"description": "時間排序：asc /desc"
+								},
+								{
+									"key": "q",
+									"value": null,
+									"description": "關鍵字"
+								},
+								{
+									"key": "page",
+									"value": null,
+									"description": "當前頁碼"
+								},
+								{
+									"key": "limit",
+									"value": null,
+									"description": "單頁筆數"
+								}
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "6292846c3f4b509493f8f3fb",
+									"description": "使用者 ID"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "其他",
+			"item": [
+				{
+					"name": "上傳圖片",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyODdjOTc1MTNiMTg4ZWZiZWUwMDA1YyIsImlhdCI6MTY1MzY3NDcwNiwiZXhwIjoxNjU0Mjc5NTA2fQ.QaIkSRl45bzKa17EawH38GhqzJt1ZsG9BIScW8Zoo5Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"type": "file",
+									"src": "/Users/hobbylee/Downloads/ACE1076F-2A37-468B-A594-335E0D36D3CA.JPG"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/upload",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
