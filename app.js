@@ -10,6 +10,16 @@ const uploadRouter = require('./routes/uploads')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const dotenv = require('dotenv')
+const nodemailer = require('nodemailer');
+const credentials = require('./utils/credentials')
+
+const mailTransport = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'hobby99949@gmail.com',
+    pass: 'hobby19900419',
+  },
+});
 
 let DB = ''
 if (process.env.NODE_ENV === 'dev') {
