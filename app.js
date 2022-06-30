@@ -10,22 +10,12 @@ const uploadRouter = require('./routes/uploads')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const dotenv = require('dotenv')
-const nodemailer = require('nodemailer');
-const credentials = require('./utils/credentials')
-
-const mailTransport = nodemailer.createTransport({
-  service: 'Gmail',
-  auth: {
-    user: 'hobby99949@gmail.com',
-    pass: '',
-  },
-});
 
 let DB = ''
 if (process.env.NODE_ENV === 'dev') {
   dotenv.config({ path: './config_dev.env' })
-  DB = process.env.DATABASE
-  // DB = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
+  // DB = process.env.DATABASE
+  DB = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)
 } else {
   dotenv.config({ path: './config.env' })
   DB = process.env.DATABASE.replace('<password>', process.env.DATABASE_PASSWORD)

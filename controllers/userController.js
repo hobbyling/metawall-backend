@@ -10,6 +10,15 @@ const {
   isValidGender
 } = require('../utils/validate')
 const bcrypt = require('bcryptjs')
+const nodemailer = require("nodemailer");
+const dotenv = require('dotenv')
+const jwt = require('jsonwebtoken')
+
+if (process.env.NODE_ENV === 'dev') {
+  dotenv.config({ path: './config_dev.env' })
+} else {
+  dotenv.config({ path: './config.env' })
+}
 
 const users = {
   // 註冊
@@ -89,7 +98,7 @@ const users = {
     generateSendJWT(user, 200, res)
   },
 
-  // 重設密碼
+  // 更新密碼
   async updatePassword(req, res, next) {
     let { password, confirmPassword } = req.body
 
@@ -119,6 +128,58 @@ const users = {
     })
 
     generateSendJWT(user, 200, res)
+  },
+
+  // 寄出重設密碼信
+  async forgetPassword(req, res, next) {
+    let { email } = req.body
+
+    // Email 格式錯誤
+    if (!isValidEmail(email).valid) {
+      return next(appError(400, 1, isValidEmail(email).msg, next))
+    }
+
+    // 是否是註冊過的 email
+    const hasRegister = await User.findOne({ email })
+
+    if (!hasRegister) {
+      return next(appError(400, 1, { email: '此 Email 尚未註冊' }, next))
+    }
+    console.log('hasRegister', hasRegister)
+    // 產生 JWT token
+    const token = jwt.sign({ id: hasRegister._id }, process.env.JWT_RESET_SECRET, {
+      expiresIn: Date.now() + 60 * 30 * 1000
+    })
+
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        type: "OAuth2",
+        user: process.env.GMAIL_ACCOUNT,
+        clientId: process.env.OAUTH_CLINENTID,
+        clientSecret: process.env.OAUTH_CLINENTSECRET,
+        refreshToken: process.env.OAUTH_REFRESHTOKEN,
+        accessToken: process.env.OAUTH_ACCESSTOKEN
+      }
+    });
+
+    let mailOptions = {
+      from: process.env.GMAIL_ACCOUNT, // sender address
+      to: email, // list of receivers:gennaro.nolan58@ethereal.email, zxz5khfjx7nsjlon@ethereal.email
+      subject: "MetaWall Reset Password", // plain text body
+      html: `https://hobbyling.github.io/metawall/resetPassword?email=${email}&token=${token}`, // html body
+    }
+
+    await transporter.sendMail(mailOptions, function (err, info) {
+      if (err) {
+        return next(appError(500, 0, err, next))
+      } else {
+        return resHandle.successHandle(res, '已發送 Email，請前往信箱查看', 1)
+      }
+    });
+    return resHandle.successHandle(res, '已發送 Email，請前往信箱查看', 1)
   },
 
   // 取得個人資料（自己）

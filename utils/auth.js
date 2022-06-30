@@ -22,6 +22,7 @@ const generateSendJWT = (user, statusCode, res) => {
 }
 
 const isAuth = handleErrorAsync(async (req, res, next) => {
+  const { reset } = req.body
   // 確認 token 是否存在
   let token
 
@@ -37,9 +38,17 @@ const isAuth = handleErrorAsync(async (req, res, next) => {
 
   // 驗證 token 正確性
   const decoded = await new Promise((resolve, reject) => {
-    jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
-      err ? reject(err) : resolve(payload)
-    })
+
+    if (reset) {
+      jwt.verify(token, process.env.JWT_RESET_SECRET, (err, payload) => {
+        err ? reject(err) : resolve(payload)
+      })
+    } else {
+      jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
+        err ? reject(err) : resolve(payload)
+      })
+    }
+
   })
   const currentUser = await User.findById(decoded.id)
 

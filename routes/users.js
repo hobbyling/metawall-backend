@@ -15,6 +15,12 @@ router.post('/sign_in', handleErrorAsync(UserControllers.signIn))
 /* 重設密碼 */
 router.post('/updatePassword', isAuth, handleErrorAsync(UserControllers.updatePassword))
 
+/* 忘記密碼 */
+router.post('/forget_password', handleErrorAsync(UserControllers.forgetPassword))
+
+/* 重置密碼 */
+router.post('/reset_password', isAuth, handleErrorAsync(UserControllers.updatePassword))
+
 /* 取得個人資料（自己） */
 router.get('/profile', isAuth, handleErrorAsync(UserControllers.getProfile))
 
