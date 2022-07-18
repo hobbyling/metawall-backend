@@ -27,6 +27,13 @@ const likes = {
       return next(appError(400, 1, isValidID(postId).msg, next))
     }
 
+    // 驗證有此貼文
+    const hasPost = await Post.findOne({ _id: postId })
+
+    if (!hasPost) {
+      return next(appError(400, 1, { id: '查無此貼文' }, next))
+    }
+
     // 在 post 的 like 新增 user id
     await Post.findByIdAndUpdate(postId, {
       $addToSet: {
@@ -44,6 +51,13 @@ const likes = {
     // 驗證 ID 格式
     if (!isValidID(postId).valid) {
       return next(appError(400, 1, isValidID(postId).msg, next))
+    }
+
+    // 驗證有此貼文
+    const hasPost = await Post.findOne({ _id: postId })
+
+    if (!hasPost) {
+      return next(appError(400, 1, { id: '查無此貼文' }, next))
     }
 
     await Post.findByIdAndUpdate(postId, {

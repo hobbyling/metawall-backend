@@ -41,11 +41,11 @@ const isAuth = handleErrorAsync(async (req, res, next) => {
 
     if (reset) {
       jwt.verify(token, process.env.JWT_RESET_SECRET, (err, payload) => {
-        err ? reject(err) : resolve(payload)
+        err ? next(appError(400, 6, { token: '認證失敗，請重新點選連結' }, next)) : resolve(payload)
       })
     } else {
       jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
-        err ? reject(err) : resolve(payload)
+        err ? next(appError(400, 6, { token: '認證失敗，請重新登入' }, next)) : resolve(payload)
       })
     }
 

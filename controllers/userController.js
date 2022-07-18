@@ -186,12 +186,20 @@ const users = {
   async getProfile(req, res, next) {
     const user = await User.findById(req.user.id)
 
+    if (!user) {
+      return next(appError(400, 1, { id: '查無此用戶' }, next))
+    }
+
     resHandle.successHandle(res, user, 1)
   },
 
   // 取得個人資料（他人）
   async getUserProfile(req, res, next) {
     let user = await User.findById(req.params.userId)
+
+    if (!user) {
+      return next(appError(400, 1, { id: '查無此用戶' }, next))
+    }
 
     resHandle.successHandle(res, user)
   },

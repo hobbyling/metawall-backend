@@ -1,4 +1,5 @@
 const Post = require('../models/postsModel')
+const User = require('../models/usersModel')
 const Comment = require('../models/commentsModel')
 const appError = require("../utils/appError")
 const resHandle = require('../utils/resHandle')
@@ -59,6 +60,13 @@ const posts = {
 
   // 取得個人動態牆
   async getPosts(req, res, next) {
+    // 判斷是否有該用戶
+    const hasUser = await User.findOne({ _id: req.params.userId })
+
+    if (!hasUser) {
+      return next(appError(400, 1, { id: '查無此用戶' }, next))
+    }
+
     // 時間排序
     const timeSort = req.query.timeSort === 'asc' ? 'createdAt' : '-createdAt'
 
@@ -121,6 +129,10 @@ const posts = {
     }
 
     const post = await Post.findById(postId)
+
+    if (!post) {
+      return next(appError(400, 1, { id: '查無此貼文' }, next))
+    }
 
     resHandle.successHandle(res, post)
   },

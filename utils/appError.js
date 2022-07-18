@@ -21,6 +21,10 @@ const appError = (httpStatus, errStatus, errMessage = null, next) => {
       status = '身份不符'
       break
 
+    case 6:
+      status = '認證失敗'
+      break
+
     default:
       status = '操作錯誤'
       break;
